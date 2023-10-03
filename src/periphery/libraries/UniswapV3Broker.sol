@@ -105,13 +105,13 @@ library UniswapV3Broker {
         address factory,
         AddLiquidityParams memory params
     )
-        internal
-        returns (
-            uint128 liquidity,
-            uint256 amount0,
-            uint256 amount1,
-            IUniswapV3Pool pool
-        )
+    public
+    returns (
+        uint128 liquidity,
+        uint256 amount0,
+        uint256 amount1,
+        IUniswapV3Pool pool
+    )
     {
         PoolAddress.PoolKey memory poolKey = PoolAddress.PoolKey({
             token0: params.token0,
@@ -160,13 +160,13 @@ library UniswapV3Broker {
         UniswapV3Broker.Position memory positionArg,
         PoolAddress.PoolKey memory poolKey
     )
-        internal
-        returns (
-            UniswapV3Broker.Position memory position,
-            uint128 liquidity,
-            uint256 amount0,
-            uint256 amount1
-        )
+    public
+    returns (
+        UniswapV3Broker.Position memory position,
+        uint128 liquidity,
+        uint256 amount0,
+        uint256 amount1
+    )
     {
         position = positionArg;
         IUniswapV3Pool pool;
@@ -229,12 +229,12 @@ library UniswapV3Broker {
         UniswapV3Broker.Position memory positionArg,
         PoolAddress.PoolKey memory poolKey
     )
-        internal
-        returns (
-            UniswapV3Broker.Position memory position,
-            uint256 amount0,
-            uint256 amount1
-        )
+    public
+    returns (
+        UniswapV3Broker.Position memory position,
+        uint256 amount0,
+        uint256 amount1
+    )
     {
         require(params.liquidity > 0);
         position = positionArg;
@@ -275,7 +275,7 @@ library UniswapV3Broker {
             uint128(
                 FullMath.mulDiv(
                     feeGrowthInside0LastX128 -
-                        position.feeGrowthInside0LastX128,
+                    position.feeGrowthInside0LastX128,
                     positionLiquidity,
                     FixedPoint128.Q128
                 )
@@ -285,7 +285,7 @@ library UniswapV3Broker {
             uint128(
                 FullMath.mulDiv(
                     feeGrowthInside1LastX128 -
-                        position.feeGrowthInside1LastX128,
+                    position.feeGrowthInside1LastX128,
                     positionLiquidity,
                     FixedPoint128.Q128
                 )
@@ -310,13 +310,13 @@ library UniswapV3Broker {
         UniswapV3Broker.Position memory positionArg,
         PoolAddress.PoolKey memory poolKey
     )
-        internal
-        returns (
-            UniswapV3Broker.Position memory position,
-            address recipient,
-            uint256 amount0,
-            uint256 amount1
-        )
+    public
+    returns (
+        UniswapV3Broker.Position memory position,
+        address recipient,
+        uint256 amount0,
+        uint256 amount1
+    )
     {
         require(params.amount0Max > 0 || params.amount1Max > 0);
         // allow collecting to the nft position manager address with address 0
@@ -345,17 +345,17 @@ library UniswapV3Broker {
                 ,
 
             ) = pool.positions(
-                    PositionKey.compute(
-                        address(this),
-                        position.tickLower,
-                        position.tickUpper
-                    )
-                );
+                PositionKey.compute(
+                    address(this),
+                    position.tickLower,
+                    position.tickUpper
+                )
+            );
 
             tokensOwed0 += uint128(
                 FullMath.mulDiv(
                     feeGrowthInside0LastX128 -
-                        position.feeGrowthInside0LastX128,
+                    position.feeGrowthInside0LastX128,
                     position.liquidity,
                     FixedPoint128.Q128
                 )
@@ -363,7 +363,7 @@ library UniswapV3Broker {
             tokensOwed1 += uint128(
                 FullMath.mulDiv(
                     feeGrowthInside1LastX128 -
-                        position.feeGrowthInside1LastX128,
+                    position.feeGrowthInside1LastX128,
                     position.liquidity,
                     FixedPoint128.Q128
                 )

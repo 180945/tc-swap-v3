@@ -132,6 +132,7 @@ contract NonfungibleTokenPositionDescriptor is
         if (token == WTC) {
             return TokenRatioSortOrder.DENOMINATOR;
         }
+        chainId;
         return 0;
     }
 }
