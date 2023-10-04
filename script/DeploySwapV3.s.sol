@@ -12,6 +12,7 @@ import "../src/periphery/NonfungibleTokenPositionDescriptor.sol";
 import "../src/periphery/lens/QuoterV2.sol";
 import {NonfungiblePositionManager} from "../src/periphery/NonfungiblePositionManager.sol";
 import {SwapRouter} from "../src/periphery/SwapRouter.sol";
+import "../src/wtc/wtc.sol";
 
 contract TCScript is Script {
     address upgradeAddress;
@@ -19,12 +20,14 @@ contract TCScript is Script {
 
     function setUp() public {
         upgradeAddress = vm.envAddress("UPGRADE_WALLET");
-        wtc = vm.envAddress("WTC");
     }
 
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
+
+        // deploy wtc
+        wtc = address(new WETH9());
 
         // deploy v3 pool factory
         UniswapV3Factory uV3FactoryImp = new UniswapV3Factory();
@@ -51,6 +54,8 @@ contract TCScript is Script {
         QuoterV2 quoteV2Imp = new QuoterV2();
 
         bytes memory result = bytes('{');
+
+        result = abi.encodePacked(result, jsonFormat(bytes('"WTC"'), bytes(vm.toString(address(wtc))), false));
 
         // @Addresses deploy proxy
         UniswapV3Factory uV3Factory = UniswapV3Factory(address(new TransparentUpgradeableProxy(
