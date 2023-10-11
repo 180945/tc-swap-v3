@@ -6,7 +6,7 @@ import "../../core/interfaces/IUniswapV3Factory.sol";
 /// @title Provides functions for deriving a pool address from the factory, tokens, and the fee
 library PoolAddress {
     bytes32 internal constant POOL_INIT_CODE_HASH =
-        0x04759a882be3a45ff74719de5c82516d29af4b3480d076fc0c57b2fdab813bc7;
+        0x221a6e7d2b197059be36f408396b06861806589ca3cf8384c141fc4f0b325955;
 
     /// @notice The identifying key of the pool
     struct PoolKey {
